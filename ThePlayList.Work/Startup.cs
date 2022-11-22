@@ -6,11 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThePlayList.Work.Setting;
 
 namespace ThePlayList.Work
 {
@@ -28,6 +30,9 @@ namespace ThePlayList.Work
         {
 
             services.AddControllers();
+            services.Configure<ThePlayListDatabaseSettings>(Configuration.GetSection(nameof(ThePlayListDatabaseSettings)));
+            services.AddSingleton<IThePlayListDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ThePlayListDatabaseSettings>>().Value);
+            services.AddTransient<IThePlayListDatabaseSettings, ThePlayListDatabaseSettings>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ThePlayList.Work", Version = "v1" });
