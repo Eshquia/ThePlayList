@@ -2,18 +2,44 @@
 {
     public class Node
     {
-        public Node()
-        {
-            width = 120;
-            height = 60;
-        }
-        public string type { get; set; }
-        public string title { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
         public int id { get; set; }
-        public int payload { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
+        public int top { get; set; }
+        public int left { get; set; }
+        public Properties properties { get; set; }
     }
+    public class Input1
+    {
+        public string label { get; set; }
+    }
+
+    public class Inputs
+    {
+        public Ins ins { get; set; }
+        public Input1 input_1 { get; set; }
+    }
+
+    public class Ins
+    {
+        public string label { get; set; }
+        public bool multiple { get; set; }
+    }
+
+    public class Output1
+    {
+        public string label { get; set; }
+    }
+
+    public class Outputs
+    {
+        public Output1 output_1 { get; set; }
+    }
+
+    public class Properties
+    {
+        public string title { get; set; }
+        public string @class { get; set; }
+        public Inputs inputs { get; set; }
+        public Outputs outputs { get; set; }
+    }
+
 }

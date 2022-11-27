@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ThePlayList.Work.Entities;
 using ThePlayList.Work.Repositories;
 
 namespace ThePlayList.Work.Controllers
@@ -21,6 +22,14 @@ namespace ThePlayList.Work.Controllers
         {
            var works= await _workRepository.GetAllWorks();
             return Ok(works);
+        }
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<Entities.Work>>> CreateWork([FromBody]Entities.Work work)
+        {
+            await _workRepository.Create(work);
+           return Ok();
         }
 
     }
