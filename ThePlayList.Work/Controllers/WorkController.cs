@@ -31,6 +31,13 @@ namespace ThePlayList.Work.Controllers
             await _workRepository.Create(work);
            return Ok();
         }
-
+        [Route("PlayWork")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<Entities.Work>>> PlayWork([FromBody] Entities.Work work)
+        {
+            await _workRepository.Create(work);
+            return Ok();
+        }
     }
 }
