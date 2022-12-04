@@ -40,6 +40,7 @@
         public string @class { get; set; }
         public Inputs inputs { get; set; }
         public Outputs outputs { get; set; }
+        public string data { get; set; }    
     }
 
 }
