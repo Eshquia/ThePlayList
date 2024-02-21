@@ -1,8 +1,11 @@
 ﻿namespace ThePlayList.Work.Entities
 {
-    public class Source
+    public class Operator
     {
-        public int id { get; set; }
-        public string position { get; set; }
+        public int Top { get; set; }
+        public int Left { get; set; }
+        public int Type { get; set; }
+        public int Id { get; set; }
+        public Properties Properties { get; set; }
     }
 }

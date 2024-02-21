@@ -27,7 +27,7 @@ namespace ThePlayList.Work.Controllers
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Entities.Work>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Entities.Work>>> GetWorks()
+        public async Task<ActionResult> GetWorks()
         {
             var works = await _workRepository.GetAllWorks();
             return Ok(works);
@@ -35,7 +35,7 @@ namespace ThePlayList.Work.Controllers
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Entities.Work>>> CreateWork([FromBody] Entities.Work work)
+        public async Task<ActionResult> CreateWork([FromBody] Entities.Work work)
         {
             await _workRepository.Create(work);
             return Ok();
@@ -44,16 +44,15 @@ namespace ThePlayList.Work.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Entities.Work>>> PlayWork([FromBody] Entities.Work work)
+        public async Task<ActionResult> PlayWork(string Id)
         {
-            var playwork =await _workRepository.GetWork(work.Id);
-           
-            PlayWorkEvent playevent = _mapper.Map<PlayWorkEvent>(work);
+            var playwork =await _workRepository.GetWork(Id);
+                    
             if (playwork != null)
             {
                 try
                 {
-                    _eventBusRabbitMQProducer.Publish(EventBusStatics.PlayWork, playevent);
+                    _eventBusRabbitMQProducer.Publish(EventBusStatics.PlayWork, playwork);
                     return Ok();
                 }
                 catch (Exception e)

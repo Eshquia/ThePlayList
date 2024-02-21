@@ -1,4 +1,6 @@
-﻿namespace ThePlayList.Work.Entities
+﻿using System.Collections.Generic;
+
+namespace ThePlayList.Work.Entities
 {
     public class Node
     {
@@ -7,40 +9,25 @@
         public int left { get; set; }
         public Properties properties { get; set; }
     }
-    public class Input1
+
+
+    public class Input
     {
-        public string label { get; set; }
+        public string Label { get; set; }
+        public bool Multiple { get; set; }
     }
 
-    public class Inputs
+    public class Output
     {
-        public Ins ins { get; set; }
-        public Input1 input_1 { get; set; }
-    }
-
-    public class Ins
-    {
-        public string label { get; set; }
-        public bool multiple { get; set; }
-    }
-
-    public class Output1
-    {
-        public string label { get; set; }
-    }
-
-    public class Outputs
-    {
-        public Output1 output_1 { get; set; }
+        public string Label { get; set; }
     }
 
     public class Properties
     {
-        public string title { get; set; }
-        public string @class { get; set; }
-        public Inputs inputs { get; set; }
-        public Outputs outputs { get; set; }
-        public string data { get; set; }    
+        public string Title { get; set; }
+        public string Class { get; set; }
+        public Dictionary<string, Input> Inputs { get; set; }
+        public Dictionary<string, Output> Outputs { get; set; }
     }
 
 }
