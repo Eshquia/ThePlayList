@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using WorkerService.Interface;
 
 namespace WorkerService.Models
 {
-    public class OpenBrowser
+    public class OpenBrowser : IExecutable<bool>
     {
-        public string Url { get; private set; }
-
-        // Örnek output parametresi
-        public bool Result { get; private set; }
-
-        // Constructor (kurucu) metodu
-        public OpenBrowser(string? url)
+        public Result<bool> Execute(object input)
         {
-            Url = url;
-        }
-
-        // Metodun çağrılacağı yer
-        public Result<bool> Execute()
-        {
-            try
-            {
-                return new Result<bool>(true) { Successful = true };
-            }
-            catch (Exception ex)
+            if (input is string url)
             {
 
-                return new Result<bool>(false) { Successful = false };
+                Result<bool> executionResult = new Result<bool>(true);
+                executionResult.Successful = true;
+                executionResult.ProcessId = "1111231231231";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = input.ToString(),
+                    UseShellExecute = true
+                });
+                return executionResult;
+            }
+            else
+            {
+                // Hatalı giriş parametresi
+                Result<bool> executionResult = new Result<bool>(false);
+                executionResult.Successful=true;
+                return executionResult;
             }
         }
+
     }
 }

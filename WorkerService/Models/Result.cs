@@ -14,5 +14,6 @@ namespace WorkerService.Models
         {
             Value = value;
         }
+        public string ProcessId { get;  set; }
     }
 }
