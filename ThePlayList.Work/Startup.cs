@@ -40,7 +40,17 @@ namespace ThePlayList.Work
             services.AddSingleton<IThePlayListDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ThePlayListDatabaseSettings>>().Value);
             services.AddTransient<IThePlayListContext, ThePlayListContext>();
             services.AddTransient<IWorkRepository, WorkRepository>();
-            services.AddAutoMapper(typeof(Startup));    
+            services.AddAutoMapper(typeof(Startup));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200") // Angular uygulamanýzýn adresi
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
+
+            // Configure metodunda
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ThePlayList.Work", Version = "v1" });
@@ -82,7 +92,7 @@ namespace ThePlayList.Work
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ThePlayList.Work v1"));
             }
-
+            app.UseCors("AllowOrigin");
             app.UseHttpsRedirection();
 
             app.UseRouting();

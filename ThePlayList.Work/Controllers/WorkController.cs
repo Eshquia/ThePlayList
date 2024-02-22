@@ -37,8 +37,8 @@ namespace ThePlayList.Work.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult> CreateWork([FromBody] Entities.Work work)
         {
-            await _workRepository.Create(work);
-            return Ok();
+            string createdId = await _workRepository.Create(work);
+            return Ok(new { CreatedId = createdId });
         }
         [Route("PlayWork")]
         [HttpPost]

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using OpenQA.Selenium;
+using System.Diagnostics;
 using WorkerService.Interface;
 
 namespace WorkerService.Models
@@ -7,17 +8,22 @@ namespace WorkerService.Models
     {
         public Result<bool> Execute(object input)
         {
-            if (input is string url)
+            var driver = SeleniumHelper.Instance.Driver;
+            if (input is Dictionary<string, string> entries)
             {
-
+              
                 Result<bool> executionResult = new Result<bool>(true);
                 executionResult.Successful = true;
                 executionResult.ProcessId = "1111231231231";
-                Process.Start(new ProcessStartInfo
+              
+                if (entries.TryGetValue("Link", out string url))
                 {
-                    FileName = input.ToString(),
-                    UseShellExecute = true
-                });
+                    if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+                    {
+                        url = "http://" + url;
+                    }
+                    driver.Navigate().GoToUrl(url);
+                }             
                 return executionResult;
             }
             else

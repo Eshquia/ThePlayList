@@ -13,9 +13,10 @@ namespace ThePlayList.Work.Repositories
             _context = context;
         }
 
-        public async Task Create(Entities.Work work)
+        public async Task<string> Create(Entities.Work work)
         {
-           await _context.Works.InsertOneAsync(work);
+            await _context.Works.InsertOneAsync(work);
+            return work.Id.ToString();
         }
 
         public async Task<bool> Delete(string id)

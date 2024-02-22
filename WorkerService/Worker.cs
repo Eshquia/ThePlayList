@@ -22,7 +22,7 @@ public class WorkerServiceRPA : BackgroundService
         var eventBusUserName = _configuration["EventBus:UserName"];
         var eventBusPassword = _configuration["EventBus:Password"];
         var eventBusRetryCount = _configuration.GetValue<int>("EventBus:RetryCount");
-
+       
         var factory = new ConnectionFactory()
         {
             HostName = eventBusHostname,

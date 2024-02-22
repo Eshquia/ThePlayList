@@ -34,8 +34,8 @@ namespace WorkerService.Models
                 public int Type { get; set; }
                 public int Id { get; set; }
                 public Properties? Properties { get; set; }
-                public List<string>? Entries { get; set; }
-            }
+                public Dictionary<string, string>? Entries { get; set; }
+        }
 
             public class Link
             {

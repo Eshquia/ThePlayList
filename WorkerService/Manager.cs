@@ -27,7 +27,7 @@ namespace WorkerService
                     var executableInstance = (IExecutable<bool>)Activator.CreateInstance(activiteType);
 
                     // Execute metodunu çağırabilirsiniz
-                    var result = executableInstance.Execute("x"); // Gerekli parametreleri object içinde verirsiniz
+                    var result = executableInstance.Execute(newoperator.Entries); // Gerekli parametreleri object içinde verirsiniz
 
                     // Result'u kullanabilirsiniz
                     if (result.Successful)
