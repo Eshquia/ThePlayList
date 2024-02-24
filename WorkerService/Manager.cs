@@ -26,13 +26,11 @@ namespace WorkerService
                     // Sınıf IExecutable<bool> arayüzünü uyguluyorsa
                     var executableInstance = (IExecutable<bool>)Activator.CreateInstance(activiteType);
 
-                    // Execute metodunu çağırabilirsiniz
                     var result = executableInstance.Execute(newoperator.Entries); // Gerekli parametreleri object içinde verirsiniz
 
                     // Result'u kullanabilirsiniz
                     if (result.Successful)
                     {
-                        // İşlem başarılıysa
                         Console.WriteLine("Operation successful with result: " + result.Value);
                     }
                     else
