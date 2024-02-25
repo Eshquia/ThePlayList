@@ -18,7 +18,7 @@ namespace WorkerService
                 string linkKey = linkPair.Key;
                 Link link = linkPair.Value;
                 Operator newoperator = node.Operators[link.ToOperator.ToString()];
-                var activiteTypeFullName = "WorkerService.Activities.Browser." + newoperator.Properties.Title.Replace(" ", "");
+                var activiteTypeFullName = "WorkerService.Activities."+newoperator.Properties.Class +'.'+ newoperator.Properties.Title.Replace(" ", "");
                 Type activiteType = Type.GetType(activiteTypeFullName);
 
                 if (activiteType != null && typeof(IExecutable<bool>).IsAssignableFrom(activiteType))
