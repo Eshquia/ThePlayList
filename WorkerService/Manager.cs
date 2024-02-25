@@ -18,11 +18,12 @@ namespace WorkerService
                 string linkKey = linkPair.Key;
                 Link link = linkPair.Value;
                 Operator newoperator = node.Operators[link.ToOperator.ToString()];
-                var activiteTypeFullName = "WorkerService.Models." + newoperator.Properties.Class;
+                var activiteTypeFullName = "WorkerService.Activities.Browser." + newoperator.Properties.Title.Replace(" ", "");
                 Type activiteType = Type.GetType(activiteTypeFullName);
 
                 if (activiteType != null && typeof(IExecutable<bool>).IsAssignableFrom(activiteType))
                 {
+                    Task.Delay(1000);
                     // Sınıf IExecutable<bool> arayüzünü uyguluyorsa
                     var executableInstance = (IExecutable<bool>)Activator.CreateInstance(activiteType);
 
@@ -41,7 +42,7 @@ namespace WorkerService
                 }
                 else
                 {
-                    // Belirtilen tür IExecutable<bool> arayüzünü uygulamıyorsa veya tür bulunamazsa
+                    // Belirtilen tür IExecutable<bool> arayüzünü uygulamıyorsa veya tür bulunamazsa 
                 }
             }
         }
