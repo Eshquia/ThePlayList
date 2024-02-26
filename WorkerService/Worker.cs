@@ -3,12 +3,14 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using WorkerService;
+using WorkerService.Helpers;
 using static WorkerService.Models.BaseModel;
 
 public class WorkerServiceRPA : BackgroundService
 {
     private readonly ILogger<WorkerServiceRPA> _logger;
     private readonly IConfiguration _configuration;
+
 
     public WorkerServiceRPA(ILogger<WorkerServiceRPA> logger, IConfiguration configuration)
     {
@@ -22,7 +24,7 @@ public class WorkerServiceRPA : BackgroundService
         var eventBusUserName = _configuration["EventBus:UserName"];
         var eventBusPassword = _configuration["EventBus:Password"];
         var eventBusRetryCount = _configuration.GetValue<int>("EventBus:RetryCount");
-       
+
         var factory = new ConnectionFactory()
         {
             HostName = eventBusHostname,

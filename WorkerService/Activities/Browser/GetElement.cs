@@ -1,13 +1,16 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkerService.Helpers;
 using WorkerService.Interface;
 using WorkerService.Models;
 
 namespace WorkerService.Activities.Browser
 {
-    public class SendElement : IExecutable<bool>
+    public class GetElement:IExecutable<bool>
     {
         public Result<bool> Execute(object input)
         {
@@ -17,14 +20,13 @@ namespace WorkerService.Activities.Browser
                 Result<bool> executionResult = new Result<bool>(true);
                 executionResult.Successful = true;
                 executionResult.ProcessId = "1";
-
-                if (entries.TryGetValue("Contains", out string elementValue) && entries.TryGetValue("TextValue", out string elementNewValue) && entries.TryGetValue("ElementType", out string elementType) )
+                if (entries.TryGetValue("Contains", out string elementValue) && entries.TryGetValue("ElementType", out string elementType) && entries.TryGetValue("out_1", out string out_1))
                 {
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    IWebElement element = null;
+
                     try
                     {
-                        IWebElement element = null;
-
+                        // XPath ile bulma
                         switch (elementType.ToLower())
                         {
                             case "id":
@@ -47,23 +49,34 @@ namespace WorkerService.Activities.Browser
                                 break;
                         }
 
-                        element.SendKeys(elementNewValue);
+                   
+                        if (element != null)
+                        {
+                            string innerText = element.GetAttribute("innerText");
+                            RedisHelper.Set(out_1, innerText);
+                        }
+                        else
+                        {
+                            executionResult.Successful = false;
+                            Console.WriteLine("Element bulunamadı.");
+                        }
                     }
-                    catch (NoSuchElementException e)
+                    catch (Exception e)
                     {
-                        // Eğer element bulunamazsa gerekli hata işlemlerini gerçekleştirin
-                        Console.WriteLine("Element bulunamadı: " + e.Message);
+                        executionResult.Successful = false;
                     }
                 }
+
                 return executionResult;
             }
             else
             {
                 // Hatalı giriş parametresi
                 Result<bool> executionResult = new Result<bool>(false);
-                executionResult.Successful = true;
+                executionResult.Successful = false;
                 return executionResult;
             }
         }
     }
 }
+

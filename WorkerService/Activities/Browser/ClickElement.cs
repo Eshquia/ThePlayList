@@ -16,61 +16,50 @@ namespace WorkerService.Activities.Browser
                 Result<bool> executionResult = new Result<bool>(true);
                 executionResult.Successful = true;
                 executionResult.ProcessId = "1";
-                if (entries.TryGetValue("Contains", out string partialLinkText) && entries.TryGetValue("ButtonType", out string elementType))
+                if (entries.TryGetValue("Contains", out string elementValue) && entries.TryGetValue("ButtonType", out string elementType))
                 {
                     IWebElement element = null;
 
                     try
                     {
-                        // XPath ile bulma
+
                         switch (elementType.ToLower())
                         {
-                            case "button":
-                                element = driver.FindElement(By.XPath($"//button[contains(text(), '{partialLinkText}')]"));
+                            case "id":
+                                element = driver.FindElement(By.Id(elementValue));
                                 break;
-                            case "a":
-                                element = driver.FindElement(By.XPath($"//a[contains(text(), '{partialLinkText}')]"));
+                            case "xpath":
+                                element = driver.FindElement(By.XPath(elementValue));
+                                break;
+                            case "classname":
+                                element = driver.FindElement(By.ClassName(elementValue));
+                                break;
+                            case "name":
+                                element = driver.FindElement(By.Name(elementValue));
+                                break;
+                            case "tagname":
+                                element = driver.FindElement(By.TagName(elementValue));
                                 break;
                             default:
                                 Console.WriteLine("Geçersiz ElementType: " + elementType);
                                 break;
                         }
-                        element.Click();
+
+                                          
+                         if (element != null)
+                            {
+                               element.Click();
+                            }
+                          else
+                            {
+                                executionResult.Successful = false;
+                                Console.WriteLine("Element bulunamadı.");
+                             }
+
                     }
                     catch (NoSuchElementException)
                     {
-                        // Eğer element bulunamazsa, diğer arama yöntemlerini dene
-                        try
-                        {
-                            // Id ile bulma
-                            element = driver.FindElement(By.Id(partialLinkText));
-                            element.Click();
-                        }
-                        catch (NoSuchElementException)
-                        {
-                            // Eğer Id ile bulunamazsa, diğer arama yöntemlerini dene
-                            try
-                            {
-                                // Name ile bulma
-                                element = driver.FindElement(By.Name(partialLinkText));
-                                element.Click();
-                            }
-                            catch (NoSuchElementException e)
-                            {
-                                try
-                                {
-                                    // Css class ile bulma                                 
-                                    string dynamicXPath = $"//button[@class='{partialLinkText}']";
-                                    element = driver.FindElement(By.XPath(dynamicXPath));
-                                    element.Click();
-                                }
-                                catch (NoSuchElementException ex)
-                                {
-                                    // Eğer element bulunamazsa gerekli hata işlemlerini gerçekleştirin
-                                    Console.WriteLine("Element bulunamadı: " + e.Message);
-                                }
-                            }
-                        }
+                        
                     }
                     finally
                     {
