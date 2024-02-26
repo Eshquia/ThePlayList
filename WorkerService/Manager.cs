@@ -13,10 +13,12 @@ namespace WorkerService
 
         public static void Process(Node node)
         {
-            foreach (var linkPair in node.Links)
+            var sortedLinks = SortLinks(node.Links);
+
+            foreach (var linkKey in sortedLinks)
             {
-                string linkKey = linkPair.Key;
-                Link link = linkPair.Value;
+
+                Link link = node.Links[linkKey];
                 Operator newoperator = node.Operators[link.ToOperator.ToString()];
                 var activiteTypeFullName = "WorkerService.Activities."+newoperator.Properties.Class +'.'+ newoperator.Properties.Title.Replace(" ", "");
                 Type activiteType = Type.GetType(activiteTypeFullName);
@@ -46,7 +48,27 @@ namespace WorkerService
                 }
             }
         }
+        private static List<string> SortLinks(Dictionary<string, Link> links)
+        {
+            var sortedLinks = new List<string>();
+            var currentOperatorId = "1000000";
 
+            while (true)
+            {
+                var nextLink = links.FirstOrDefault(link => link.Value.FromOperator == currentOperatorId);
+                if (nextLink.Value != null)
+                {
+                    sortedLinks.Add(nextLink.Key);
+                    currentOperatorId = nextLink.Value.ToOperator.ToString();
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return sortedLinks;
+        }
     }
    
 }
