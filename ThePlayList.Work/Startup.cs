@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThePlayList.Work.Checker;
 using ThePlayList.Work.Data;
 using ThePlayList.Work.Mapper;
 using ThePlayList.Work.Repositories;
@@ -50,7 +51,9 @@ namespace ThePlayList.Work
             });
 
             // Configure metodunda
-           
+            services.AddSingleton<IRuntimeChecker, RuntimeChecker>();
+            services.AddHostedService<RuntimeCheckerHostedService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ThePlayList.Work", Version = "v1" });

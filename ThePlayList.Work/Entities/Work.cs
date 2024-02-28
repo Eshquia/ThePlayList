@@ -17,6 +17,7 @@ namespace ThePlayList.Work.Entities
         public Dictionary<string, object> OperatorTypes { get; set; }
         public Status Status { get; set; }
         public DateTime LastWorkDate { get; set; }
+        public DateTime RunTime { get; set; }
 
     }
 }
